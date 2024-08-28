@@ -13,7 +13,7 @@ public class DataLoader  implements CommandLineRunner {
     private final InventoryRepository inventoryRepository;
 
     @Override
-    public void run(String... args) throws Exception {
+    public void run(String... args) {
 
         Inventory inventory = new Inventory();
         inventory.setSkuCode("MOB435");
