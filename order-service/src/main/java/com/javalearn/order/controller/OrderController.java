@@ -13,12 +13,14 @@ import static org.springframework.http.HttpStatus.CREATED;
 public class OrderController {
 
     private OrderService orderService;
-
     @PostMapping
     @ResponseStatus(CREATED)
     public String placeOrder(@RequestBody OrderRequestDto orderRequestDto){
-        orderService.placeOrder(orderRequestDto);
-        return "Order Placed successfully";
+       Boolean response =  orderService.placeOrder(orderRequestDto);
+       if (response) {
+           return "Order Placed successfully";
+       }
+       throw new IllegalArgumentException("Order Didn't placed due to no stock of items");
     }
 
 

@@ -1,5 +1,6 @@
 package com.javalearn.order.service;
 
+import com.javalearn.order.dto.InventoryResponseDto;
 import com.javalearn.order.dto.OrderRequestDto;
 import com.javalearn.order.mapper.OrderMapper;
 import com.javalearn.order.model.Order;
@@ -9,8 +10,11 @@ import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.reactive.function.client.WebClient;
 
+import java.util.Arrays;
 import java.util.List;
+import java.util.Objects;
 import java.util.UUID;
 
 @Service
@@ -21,9 +25,11 @@ public class OrderService {
 
     private OrderRepository orderRepository;
 
+    private WebClient webClient;
+
     private OrderMapper orderMapper;
 
-    public void placeOrder(OrderRequestDto orderRequestDto){
+    public Boolean placeOrder(OrderRequestDto orderRequestDto){
         Order order = new Order();
         order.setOrderNumber(UUID.randomUUID().toString());
         List<OrderLineItems> orderLineItems = orderRequestDto
@@ -32,7 +38,31 @@ public class OrderService {
                 .map(orderMapper::mapOrderLineItemsDtoToOrderLineItems)
                 .toList();
         order.setOrderLineItems(orderLineItems);
-        orderRepository.save(order);
+
+        // TODO: Call Inventory Service and place order if order is in stock
+        List<String> skuCodes =    order.getOrderLineItems().stream()
+                .map(OrderLineItems::getSkuCode)
+                .toList();
+       InventoryResponseDto[] inventoryResponses =  webClient
+                .get()
+                .uri("http://localhost:8082/api/inventory",
+                        uriBuilder -> uriBuilder
+                                .queryParam("sku-code",skuCodes)
+                                .build())
+                .retrieve()
+                .bodyToMono(InventoryResponseDto[].class)
+                .block();
+
+        /*check if inventory response is null or not then check for skucode */
+        if (Objects.nonNull(inventoryResponses)){
+            Boolean areProductInStock = Arrays.stream(inventoryResponses)
+                    .allMatch(InventoryResponseDto::getIsInStock);
+            if (Boolean.TRUE.equals(areProductInStock)) {
+                orderRepository.save(order);
+                return true;
+            }
+        }
+        return false;
 
     }
 
