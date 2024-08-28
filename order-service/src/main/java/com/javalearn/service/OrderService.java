@@ -1,7 +1,7 @@
 package com.javalearn.service;
 
-import com.javalearn.dto.OrderLineItemsDto;
 import com.javalearn.dto.OrderRequestDto;
+import com.javalearn.mapper.OrderMapper;
 import com.javalearn.model.Order;
 import com.javalearn.model.OrderLineItems;
 import com.javalearn.repository.OrderRepository;
@@ -21,26 +21,19 @@ public class OrderService {
 
     private OrderRepository orderRepository;
 
+    private OrderMapper orderMapper;
+
     public void placeOrder(OrderRequestDto orderRequestDto){
         Order order = new Order();
         order.setOrderNumber(UUID.randomUUID().toString());
-
-        List<OrderLineItems> orderLineItems = orderRequestDto.getOrderLineItemsDtoList().stream().map(this::mapToDto).toList();
-
+        List<OrderLineItems> orderLineItems = orderRequestDto
+                .getOrderLineItemsDtoList()
+                .stream()
+                .map(orderMapper::mapOrderLineItemsDtoToOrderLineItems)
+                .toList();
         order.setOrderLineItems(orderLineItems);
-
         orderRepository.save(order);
 
     }
-
-    private OrderLineItems mapToDto(OrderLineItemsDto orderLineItemsDto) {
-        OrderLineItems orderLineItems = new OrderLineItems();
-        orderLineItems.setPrice(orderLineItemsDto.getPrice());
-        orderLineItems.setQuantity(orderLineItemsDto.getQuantity());
-        orderLineItems.setSkuCode(orderLineItemsDto.getSkuCode());
-
-        return  orderLineItems;
-    }
-
 
 }
