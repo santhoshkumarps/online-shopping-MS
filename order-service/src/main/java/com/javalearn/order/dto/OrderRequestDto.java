@@ -1,4 +1,4 @@
-package com.javalearn.dto;
+package com.javalearn.order.dto;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;

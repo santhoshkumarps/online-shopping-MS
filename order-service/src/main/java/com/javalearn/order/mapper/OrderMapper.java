@@ -1,7 +1,7 @@
-package com.javalearn.mapper;
+package com.javalearn.order.mapper;
 
-import com.javalearn.dto.OrderLineItemsDto;
-import com.javalearn.model.OrderLineItems;
+import com.javalearn.order.dto.OrderLineItemsDto;
+import com.javalearn.order.model.OrderLineItems;
 import org.mapstruct.Mapper;
 import org.mapstruct.factory.Mappers;
 

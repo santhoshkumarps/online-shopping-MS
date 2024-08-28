@@ -1,7 +1,7 @@
-package com.javalearn.controller;
+package com.javalearn.order.controller;
 
-import com.javalearn.dto.OrderRequestDto;
-import com.javalearn.service.OrderService;
+import com.javalearn.order.dto.OrderRequestDto;
+import com.javalearn.order.service.OrderService;
 import lombok.AllArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 

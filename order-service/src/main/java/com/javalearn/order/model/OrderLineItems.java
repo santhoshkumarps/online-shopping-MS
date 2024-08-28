@@ -1,15 +1,21 @@
-package com.javalearn.dto;
+package com.javalearn.order.model;
 
+import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import java.math.BigDecimal;
+
+@Entity
+@Table(name = "t_orders_line_items")
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-public class OrderLineItemsDto {
+public class OrderLineItems {
 
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
     private String skuCode;
@@ -17,4 +23,5 @@ public class OrderLineItemsDto {
     private BigDecimal price;
 
     private Integer quantity;
+
 }

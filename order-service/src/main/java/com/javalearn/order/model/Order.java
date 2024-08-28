@@ -1,4 +1,4 @@
-package com.javalearn.model;
+package com.javalearn.order.model;
 
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;

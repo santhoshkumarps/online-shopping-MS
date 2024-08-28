@@ -1,10 +1,10 @@
-package com.javalearn.service;
+package com.javalearn.order.service;
 
-import com.javalearn.dto.OrderRequestDto;
-import com.javalearn.mapper.OrderMapper;
-import com.javalearn.model.Order;
-import com.javalearn.model.OrderLineItems;
-import com.javalearn.repository.OrderRepository;
+import com.javalearn.order.dto.OrderRequestDto;
+import com.javalearn.order.mapper.OrderMapper;
+import com.javalearn.order.model.Order;
+import com.javalearn.order.model.OrderLineItems;
+import com.javalearn.order.repository.OrderRepository;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
