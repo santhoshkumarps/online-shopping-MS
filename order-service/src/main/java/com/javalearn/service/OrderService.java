@@ -8,6 +8,7 @@ import com.javalearn.repository.OrderRepository;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 import java.util.UUID;
@@ -15,6 +16,7 @@ import java.util.UUID;
 @Service
 @Slf4j
 @AllArgsConstructor
+@Transactional
 public class OrderService {
 
     private OrderRepository orderRepository;
