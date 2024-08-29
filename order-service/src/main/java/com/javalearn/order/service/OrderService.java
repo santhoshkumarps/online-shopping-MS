@@ -39,19 +39,12 @@ public class OrderService {
                 .toList();
         order.setOrderLineItems(orderLineItems);
 
-        // TODO: Call Inventory Service and place order if order is in stock
+        // Call Inventory Service and place order if order is in stock
         List<String> skuCodes =    order.getOrderLineItems().stream()
                 .map(OrderLineItems::getSkuCode)
                 .toList();
-       InventoryResponseDto[] inventoryResponses =  webClient
-                .get()
-                .uri("http://localhost:8082/api/inventory",
-                        uriBuilder -> uriBuilder
-                                .queryParam("sku-code",skuCodes)
-                                .build())
-                .retrieve()
-                .bodyToMono(InventoryResponseDto[].class)
-                .block();
+
+       InventoryResponseDto[] inventoryResponses = getInventoryResponses(skuCodes);
 
         /*check if inventory response is null or not then check for skucode */
         if (Objects.nonNull(inventoryResponses)){
@@ -64,6 +57,18 @@ public class OrderService {
         }
         return false;
 
+    }
+
+    private InventoryResponseDto[] getInventoryResponses(List<String> skuCodes){
+        return webClient
+                .get()
+                .uri("http://localhost:8082/api/inventory",
+                        uriBuilder -> uriBuilder
+                                .queryParam("sku-code",skuCodes)
+                                .build())
+                .retrieve()
+                .bodyToMono(InventoryResponseDto[].class)
+                .block();
     }
 
 }
