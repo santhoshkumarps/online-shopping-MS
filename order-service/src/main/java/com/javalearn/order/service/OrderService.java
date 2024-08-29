@@ -25,7 +25,7 @@ public class OrderService {
 
     private OrderRepository orderRepository;
 
-    private WebClient webClient;
+    private WebClient.Builder webClientBuilder;
 
     private OrderMapper orderMapper;
 
@@ -60,9 +60,9 @@ public class OrderService {
     }
 
     private InventoryResponseDto[] getInventoryResponses(List<String> skuCodes){
-        return webClient
+        return webClientBuilder.build()
                 .get()
-                .uri("http://localhost:8082/api/inventory",
+                .uri("http://inventory-service/api/inventory",
                         uriBuilder -> uriBuilder
                                 .queryParam("sku-code",skuCodes)
                                 .build())
